@@ -1,0 +1,54 @@
+
+### Obtener todos los personajes
+GET http://localhost:3000/api/personajes
+
+
+### Obtener un personaje
+
+GET http://localhost:3000/api/personajes/ff0cf22a-95a0-4374-8876-73ac2aad5554
+
+### Subir personaje
+
+POST http://localhost:3000/api/personajes
+Content-Type: application/json
+
+{
+    "name": "Ahsoka",
+    "characterClass": "Jedi",
+    "items": ["Espada laser"],
+    "attack": 10,
+    "level":40,
+    "hp": 900,
+    "mana":750
+}
+
+### Actualizar personaje con PUT
+
+PUT http://localhost:3000/api/personajes/e5ef792d-6f32-4a50-a55e-e7a545154974
+Content-Type: application/json
+
+{
+    "name": "Obi-wan", 
+    "characterClass": "Jedi",
+    "items": ["Espada laser"],
+    "attack": 40,
+    "level":100,
+    "hp": 1500,
+    "mana":1200
+}
+
+### Actualizar personaje con PATCH (parcialmente)
+
+PATCH http://localhost:3000/api/personajes/e5ef792d-6f32-4a50-a55e-e7a545154974
+Content-Type: application/json
+
+{
+
+    "attack": -5,
+    "level":5,
+    "hp": 5
+
+}
+
+### Delete de un personaje por ID
+DELETE  http://localhost:3000/api/personajes/e5ef792d-6f32-4a50-a55e-e7a545154974

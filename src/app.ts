@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
-import { Personaje } from "./personajes.js";
+import { Personaje } from "./personaje/personaje.entity.js";
 
 const app = express();
 
