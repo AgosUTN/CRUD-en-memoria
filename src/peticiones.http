@@ -5,7 +5,7 @@ GET http://localhost:3000/api/personajes
 
 ### Obtener un personaje
 
-GET http://localhost:3000/api/personajes/ff0cf22a-95a0-4374-8876-73ac2aad5554
+GET http://localhost:3000/api/personajes/b185c894-4dc9-450c-a83b-43b75c9b1662
 
 ### Subir personaje
 
@@ -24,7 +24,7 @@ Content-Type: application/json
 
 ### Actualizar personaje con PUT
 
-PUT http://localhost:3000/api/personajes/e5ef792d-6f32-4a50-a55e-e7a545154974
+PUT http://localhost:3000/api/personajes/c2aba397-749f-4418-89e5-5754c25b1f0e
 Content-Type: application/json
 
 {
@@ -39,7 +39,7 @@ Content-Type: application/json
 
 ### Actualizar personaje con PATCH (parcialmente)
 
-PATCH http://localhost:3000/api/personajes/e5ef792d-6f32-4a50-a55e-e7a545154974
+PATCH http://localhost:3000/api/personajes/411ab848-c346-4b72-a1a3-352b29412a22
 Content-Type: application/json
 
 {
@@ -51,4 +51,4 @@ Content-Type: application/json
 }
 
 ### Delete de un personaje por ID
-DELETE  http://localhost:3000/api/personajes/e5ef792d-6f32-4a50-a55e-e7a545154974
+DELETE  http://localhost:3000/api/personajes/a818f5c2-cdf8-44b6-a63c-262381a63531

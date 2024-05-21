@@ -1,14 +1,17 @@
 import express, { NextFunction, Request, Response } from "express";
 import { Personaje } from "./personaje/personaje.entity.js";
+import { PersonajeRepositorio } from "./personaje/personaje.repository.js";
 
 const app = express();
-
-app.use(express.json());
 
 const personajes = [
   new Personaje("Luke", "Jedi", 100, 1500, 1000, 50, []),
   new Personaje("Han Solo", "Cazarecompensas", 85, 900, 0, 20, []),
 ];
+
+app.use(express.json());
+
+const repository = new PersonajeRepositorio();
 
 function sanitizeInput(req: Request, res: Response, next: NextFunction) {
   req.body.inputOK = {
@@ -31,13 +34,12 @@ function sanitizeInput(req: Request, res: Response, next: NextFunction) {
 }
 
 app.get("/api/personajes", (req, res) => {
-  return res.json({ data: personajes });
+  return res.json({ data: repository.findAll() });
 });
 
 app.get("/api/personajes/:id", (req, res) => {
-  const personaje = personajes.find(
-    (personajeActual) => personajeActual.id === req.params.id
-  );
+  const personaje = repository.findOne({ id: req.params.id });
+
   if (!personaje) {
     return res.status(404).send({ message: "Personaje no encontrado" });
   }
@@ -55,61 +57,49 @@ app.post("/api/personajes", sanitizeInput, (req, res) => {
     input.attack,
     input.items
   );
-  personajes.push(personajePost);
+  const personajeGuardado = repository.add(personajePost);
   return res
     .status(201)
-    .send({ message: "Personaje cargado", data: personajePost });
+    .send({ message: "Personaje cargado", data: personajeGuardado });
 });
 
 app.put("/api/personajes/:id", sanitizeInput, (req, res) => {
-  const idArray = personajes.findIndex(
-    (personajeActual) => personajeActual.id === req.params.id
-  );
+  req.body.inputOK.id = req.params.id;
+  const personajeUpdated = repository.update(req.body.inputOK);
 
-  if (idArray === -1) {
+  if (!personajeUpdated) {
     return res
       .status(404)
       .send({ message: "No existe el id del personaje ingresado." });
   }
-  personajes[idArray] = Object.assign(
-    {},
-    personajes[idArray],
-    req.body.inputOK
-  );
   return res
     .status(200)
-    .send({ message: "Personaje actualizado", data: personajes[idArray] });
+    .send({ message: "Personaje actualizado", data: personajeUpdated });
 });
 
 app.patch("/api/personajes/:id", sanitizeInput, (req, res) => {
-  const idArray = personajes.findIndex(
-    (personajeActual) => personajeActual.id === req.params.id
-  );
-  if (idArray === -1) {
+  req.body.inputOK.id = req.params.id;
+  const personajeUpdated = repository.update(req.body.inputOK);
+
+  if (!personajeUpdated) {
     return res
       .status(404)
       .send({ message: "No existe el id del personaje ingresado." });
   }
-  personajes[idArray] = Object.assign(
-    {},
-    personajes[idArray],
-    req.body.inputOK
-  );
-  return res.status(200).send({
-    message: "Personaje actualizado con PATCH",
-    data: personajes[idArray],
-  });
+  return res
+    .status(200)
+    .send({ message: "Personaje actualizado", data: personajeUpdated });
 });
 
 app.delete("/api/personajes/:id", (req, res) => {
-  const idArray = personajes.findIndex(
-    (personajeActual) => personajeActual.id === req.params.id
-  );
-  if (idArray === -1) {
+  const personajeBorrado = repository.delete({ id: req.params.id });
+
+  if (!personajeBorrado) {
     return res.status(404).send({ message: "Personaje no encontrado." });
   }
-  personajes.splice(idArray, 1);
-  return res.status(200).send({ message: "Personaje eliminado" });
+  return res
+    .status(200)
+    .send({ message: "Personaje eliminado", data: personajeBorrado });
 });
 
 app.use((req, res) => {
