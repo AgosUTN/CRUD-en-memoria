@@ -30,16 +30,18 @@ export class PersonajeRepositorio implements repository<Personaje> {
     if (idArray !== -1) {
       personajes[idArray] = Object.assign({}, personajes[idArray], item);
     }
-    return item;
+    return personajes[idArray];
   }
   public delete(item: { id: string }): Personaje | undefined {
     const idArray = personajes.findIndex(
       (personajeActual) => personajeActual.id === item.id
     );
-    const personajeBorrado = personajes[idArray];
+
     if (idArray !== -1) {
+      const personajeBorrado = personajes[idArray];
       personajes.splice(idArray, 1);
+      return personajeBorrado;
     }
-    return personajeBorrado; // si idArray = -1 ---> personaje1 == undefined
+    return undefined; // opcional
   }
 }
